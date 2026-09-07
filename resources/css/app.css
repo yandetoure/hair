@@ -1,0 +1,108 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Jost', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
+
+    /* Palette Maison Éclat */
+    --color-cream-50: #fdfaf6;
+    --color-cream-100: #f8f1e8;
+    --color-cream-200: #efe3d5;
+    --color-espresso-700: #4a332a;
+    --color-espresso-800: #33221c;
+    --color-espresso-900: #1f1411;
+    --color-gold-300: #e6cd8f;
+    --color-gold-400: #d4b25f;
+    --color-gold-500: #c19a3c;
+    --color-gold-600: #a37f2b;
+    --color-blush-300: #e7bfb4;
+    --color-blush-400: #d79c8d;
+    --color-blush-500: #c4756a;
+
+    --shadow-soft: 0 24px 60px -30px rgba(51, 34, 28, 0.45);
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-cream-50 text-espresso-800 antialiased;
+    }
+}
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium tracking-wide transition duration-200;
+}
+
+@layer components {
+    .btn-gold {
+        @apply btn bg-gold-500 text-white hover:bg-gold-600;
+    }
+
+    .btn-dark {
+        @apply btn bg-espresso-900 text-cream-100 hover:bg-espresso-700;
+    }
+
+    .btn-outline {
+        @apply btn border border-espresso-900/20 text-espresso-900 hover:border-gold-500 hover:text-gold-600;
+    }
+
+    .field {
+        @apply w-full rounded-xl border border-espresso-900/15 bg-white px-4 py-3 text-sm text-espresso-900 outline-none transition placeholder:text-espresso-700/40 focus:border-gold-500 focus:ring-2 focus:ring-gold-300/50;
+    }
+
+    .label {
+        @apply mb-1.5 block text-xs font-medium uppercase tracking-[0.14em] text-espresso-700/70;
+    }
+
+    .card {
+        @apply rounded-2xl border border-espresso-900/10 bg-white;
+    }
+
+    .eyebrow {
+        @apply text-xs font-medium uppercase tracking-[0.3em] text-gold-600;
+    }
+}
+
+/* Motifs décoratifs */
+.pattern-dots {
+    background-image: radial-gradient(circle at 1px 1px, rgba(193, 154, 60, 0.28) 1px, transparent 0);
+    background-size: 22px 22px;
+}
+
+.texture-gradient {
+    background:
+        radial-gradient(circle at 15% 20%, rgba(215, 156, 141, 0.35), transparent 45%),
+        radial-gradient(circle at 85% 10%, rgba(212, 178, 95, 0.35), transparent 40%),
+        radial-gradient(circle at 60% 90%, rgba(74, 51, 42, 0.25), transparent 50%);
+}
+
+.fade-up {
+    animation: fadeUp 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    body {
+        background: #fff;
+    }
+}
