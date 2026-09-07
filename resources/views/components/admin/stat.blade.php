@@ -25,11 +25,11 @@
         </span>
     </div>
 
-    <p class="mt-3 font-display text-3xl font-semibold leading-none text-espresso-900">{{ $value }}</p>
+    <p class="mt-3 font-display text-2xl font-semibold leading-tight text-espresso-900 xl:text-3xl">{{ $value }}</p>
 
     <div class="mt-2 flex items-center gap-2 text-xs">
         @if (! is_null($trend))
-            <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-medium {{ $trend >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500' }}">
+            <span class="inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2 py-0.5 font-medium {{ $trend >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500' }}">
                 {{ $trend >= 0 ? '▲' : '▼' }} {{ number_format(abs($trend), 1, ',', ' ') }} %
             </span>
         @endif

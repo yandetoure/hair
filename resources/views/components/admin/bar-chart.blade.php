@@ -41,9 +41,13 @@
         @endforeach
     </div>
 
+    @php
+        // Au-delà de ~12 colonnes, on n'affiche qu'une étiquette sur N pour éviter le chevauchement
+        $step = (int) ceil($rows->count() / 12);
+    @endphp
     <div class="mt-2 flex gap-1.5 overflow-x-auto text-center text-[10px] uppercase tracking-wider text-espresso-700/45">
-        @foreach ($rows as $row)
-            <span class="min-w-6 flex-1">{{ $row['label'] }}</span>
+        @foreach ($rows as $i => $row)
+            <span class="min-w-6 flex-1 whitespace-nowrap">{{ $i % $step === 0 ? $row['label'] : '' }}</span>
         @endforeach
     </div>
 </div>

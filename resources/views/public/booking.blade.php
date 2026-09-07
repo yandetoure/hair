@@ -35,7 +35,7 @@
     <input type="hidden" name="date" id="date" value="{{ old('date') }}">
     <input type="hidden" name="time" id="time" value="{{ old('time') }}">
 
-    <div class="space-y-12">
+    <div class="min-w-0 space-y-12">
         {{-- ÉTAPE 1 --}}
         <section>
             <div class="flex items-center gap-4">

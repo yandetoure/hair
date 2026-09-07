@@ -63,7 +63,7 @@
             <tbody class="divide-y divide-espresso-900/8">
                 @foreach ($series as $row)
                     <tr>
-                        <td class="py-1.5 pr-4">{{ $row['key'] }}</td>
+                        <td class="py-1.5 pr-4">{{ $row['period'] }}</td>
                         <td class="py-1.5 pr-4 text-right">{{ $row['appointments'] }}</td>
                         <td class="py-1.5 pr-4 text-right">{{ fcfa($row['services_revenue']) }}</td>
                         <td class="py-1.5 pr-4 text-right">{{ fcfa($row['orders_revenue']) }}</td>

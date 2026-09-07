@@ -31,17 +31,17 @@ class DatabaseSeeder extends Seeder
         ])->map(fn ($row, $i) => StaffMember::create($row + ['position' => $i, 'is_active' => true]));
 
         $catalog = [
-            ['Coiffure', 'ciseaux', "Coupes, brushings et mises en forme pour sublimer votre nature de cheveu.", [
-                ['Coupe & brushing', 12000, null, 60, "Coupe personnalisée, shampooing et brushing lumière.", true],
+            ['Coiffure', 'ciseaux', 'Coupes, brushings et mises en forme pour sublimer votre nature de cheveu.', [
+                ['Coupe & brushing', 12000, null, 60, 'Coupe personnalisée, shampooing et brushing lumière.', true],
                 ['Brushing lissage', 8000, 12000, 45, 'Un lissage souple et brillant qui tient toute la semaine.', false],
-                ['Coiffure de mariée', 45000, 75000, 150, "Essai inclus, accessoires et pose de voile pour le grand jour.", true],
+                ['Coiffure de mariée', 45000, 75000, 150, 'Essai inclus, accessoires et pose de voile pour le grand jour.', true],
                 ['Pose de perruque (lace)', 15000, 25000, 90, 'Pose, customisation et coiffage de votre lace wig.', false],
             ]],
             ['Tresses & Nattes', 'tresses', 'Tresses collées, twists et braids réalisées avec douceur, sans tension excessive.', [
                 ['Tresses collées (cornrows)', 10000, 18000, 120, 'Motifs simples ou géométriques, avec ou sans mèches.', true],
                 ['Box braids', 25000, 40000, 240, 'Braids longues ou mi-longues, finition brûlée ou nouée.', true],
                 ['Twists & vanilles', 20000, 30000, 180, 'Twists souples pour un style naturel et protecteur.', false],
-                ['Locks & entretien', 15000, 25000, 120, "Création, reprise de racines et entretien de locks.", false],
+                ['Locks & entretien', 15000, 25000, 120, 'Création, reprise de racines et entretien de locks.', false],
             ]],
             ['Soins capillaires', 'soins', 'Diagnostic, soins profonds et rituels de réparation adaptés à votre cuir chevelu.', [
                 ['Soin profond hydratant', 9000, null, 45, 'Masque vapeur, massage crânien et scellage des pointes.', true],
@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
 
         $products = [
             ['Huile de ricin noire 100 ml', 'Soin', 6500, 24, 'Huile pressée à froid pour fortifier les longueurs et les sourcils.', true],
-            ['Masque beurre de karité 300 ml', 'Soin', 8500, 18, "Masque nourrissant pour cheveux crépus et bouclés.", true],
+            ['Masque beurre de karité 300 ml', 'Soin', 8500, 18, 'Masque nourrissant pour cheveux crépus et bouclés.', true],
             ['Leave-in hydratant 250 ml', 'Soin', 7000, 20, 'Crème sans rinçage pour une définition souple des boucles.', false],
             ['Shampooing doux sans sulfate', 'Soin', 6000, 30, 'Nettoie sans dessécher, parfait entre deux soins.', false],
             ['Bonnet en satin', 'Accessoire', 3500, 40, 'Protège vos cheveux la nuit et limite la casse.', true],
@@ -116,12 +116,12 @@ class DatabaseSeeder extends Seeder
         }
 
         foreach ([
-            ['Aminata T.', 'Box braids', "Trois heures de douceur, aucune tension et un résultat impeccable. Je ne vais plus ailleurs."],
+            ['Aminata T.', 'Box braids', 'Trois heures de douceur, aucune tension et un résultat impeccable. Je ne vais plus ailleurs.'],
             ['Chantal K.', 'Soin profond', "Mes cheveux ont retrouvé de la densité en deux séances. L'équipe prend vraiment le temps d'expliquer."],
             ['Mariam D.', 'Pédicure spa', "Un vrai moment de détente, l'hygiène est irréprochable et l'accueil chaleureux."],
-            ['Estelle N.', 'Coiffure de mariée', "Ils ont tenu compte de chaque détail pour mon mariage. Mes invités ont adoré."],
+            ['Estelle N.', 'Coiffure de mariée', 'Ils ont tenu compte de chaque détail pour mon mariage. Mes invités ont adoré.'],
             ['Rachelle B.', 'Manucure', "Prise de rendez-vous en ligne ultra simple, et jamais d'attente sur place."],
-            ['Fanta S.', 'Coloration', "Une couleur sur mesure, exactement la nuance que je voulais. Bravo !"],
+            ['Fanta S.', 'Coloration', 'Une couleur sur mesure, exactement la nuance que je voulais. Bravo !'],
         ] as [$author, $context, $content]) {
             Testimonial::create(compact('author', 'context', 'content') + ['rating' => 5]);
         }

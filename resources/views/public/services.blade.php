@@ -64,7 +64,7 @@
                                     </p>
                                 </div>
 
-                                <div class="flex items-center gap-6 sm:flex-col sm:items-end sm:gap-2">
+                                <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 sm:flex-col sm:items-end sm:gap-2">
                                     <span class="whitespace-nowrap font-display text-2xl font-semibold text-gold-600">{{ $service->price_label }}</span>
                                     <a href="{{ route('booking.create', ['service' => $service->slug]) }}"
                                        class="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-medium text-espresso-900 transition hover:text-gold-600">

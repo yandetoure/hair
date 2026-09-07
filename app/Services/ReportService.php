@@ -68,6 +68,9 @@ class ReportService
                 'short' => $unit === 'month'
                     ? $cursor->locale('fr')->isoFormat('MMM')
                     : $cursor->locale('fr')->isoFormat('ddd'),
+                'period' => $unit === 'month'
+                    ? ucfirst($cursor->locale('fr')->isoFormat('MMMM YYYY'))
+                    : ucfirst($cursor->locale('fr')->isoFormat('ddd D MMMM')),
                 'appointments' => $appointments->get($key)?->count() ?? 0,
                 'services_revenue' => (int) ($appointments->get($key)?->sum('price') ?? 0),
                 'orders_revenue' => (int) ($orders->get($key)?->sum('total') ?? 0),
