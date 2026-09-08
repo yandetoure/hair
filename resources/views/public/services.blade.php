@@ -35,9 +35,8 @@
                 <div id="{{ $category->slug }}" class="scroll-mt-40">
                     <div class="flex flex-col gap-6 border-b border-espresso-900/10 pb-8 sm:flex-row sm:items-end sm:justify-between">
                         <div class="flex items-start gap-5">
-                            <span class="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-espresso-900 text-gold-300">
-                                <x-icon :name="$category->icon" class="h-7 w-7" />
-                            </span>
+                            <x-media :src="$category->image" :alt="$category->name" :icon="$category->icon"
+                                     ratio="aspect-square" class="h-20 w-20 shrink-0 rounded-2xl" />
                             <div>
                                 <h2 class="font-display text-3xl font-semibold text-espresso-900 sm:text-4xl">{{ $category->name }}</h2>
                                 <p class="mt-2 max-w-xl text-sm leading-relaxed text-espresso-700/75">{{ $category->description }}</p>
@@ -76,6 +75,43 @@
                     </ul>
                 </div>
             @endforeach
+        </div>
+
+        {{-- Forfaits --}}
+        <div class="mt-24 grid items-center gap-10 rounded-[2rem] border border-gold-500/25 bg-cream-100 p-10 lg:grid-cols-[1.2fr_1fr] lg:p-14">
+            <div>
+                <span class="eyebrow">Forfaits & rituels</span>
+                <h2 class="mt-3 font-display text-3xl font-semibold text-espresso-900 sm:text-4xl">
+                    Plusieurs prestations, un tarif plus doux
+                </h2>
+                <p class="mt-4 text-espresso-700/80">
+                    Rituel mariée, abonnement cheveux sains, parenthèse duo : nos formules réunissent les prestations
+                    qui vont bien ensemble, avec une économie à la clé.
+                </p>
+                <a href="{{ route('offers.index') }}" class="btn-gold mt-7">Découvrir les forfaits</a>
+            </div>
+            <x-media src="images/offers/abonnement.jpg" alt="Forfaits beauté" ratio="aspect-[4/3]" />
+        </div>
+
+        {{-- FAQ --}}
+        <div class="mt-24">
+            <x-section-title eyebrow="Questions fréquentes" title="Avant votre venue" />
+
+            <dl class="mx-auto mt-12 max-w-3xl divide-y divide-espresso-900/10">
+                @foreach ([
+                    ['Faut-il venir les cheveux lavés ?', "Pour une pose de tresses, oui : cheveux propres et démêlés, lavés 48h avant. Pour une coupe ou un soin, nous nous occupons du shampooing sur place."],
+                    ['Combien de temps dure une pose de braids ?', "Entre 3 et 5 heures selon la longueur et la finesse des tresses. Nous vous donnons une estimation précise à la réservation."],
+                    ['Dois-je apporter mes mèches ?', "Vous pouvez apporter les vôtres ou les acheter au salon. Dans les deux cas, dites-le nous à la réservation pour caler la durée."],
+                    ['Les tarifs affichés sont-ils définitifs ?', "Oui pour les prestations à prix fixe. Les fourchettes dépendent de la longueur, du volume et du temps nécessaire : le montant exact est confirmé avant de commencer."],
+                    ['Puis-je venir avec un enfant ?', "Bien sûr, un coin enfants est aménagé. Nous proposons aussi des coiffures enfant sur rendez-vous."],
+                    ['Comment annuler ou décaler ?', "Un appel ou un message WhatsApp au moins 24h avant suffit, sans frais."],
+                ] as $i => [$question, $answer])
+                    <div class="py-5" data-reveal>
+                        <dt class="font-display text-xl font-semibold text-espresso-900">{{ $question }}</dt>
+                        <dd class="mt-2 text-sm leading-relaxed text-espresso-700/80">{{ $answer }}</dd>
+                    </div>
+                @endforeach
+            </dl>
         </div>
 
         <div class="mt-24 rounded-[2rem] bg-espresso-900 p-10 text-center text-cream-100 lg:p-14">

@@ -23,14 +23,13 @@
     <section class="mx-auto max-w-7xl px-5 pb-24 lg:px-8">
         <div class="grid gap-6 sm:grid-cols-3">
             @foreach ([
-                ['aspect-[4/5]', 'Espace coiffage'],
-                ['aspect-[4/5] sm:mt-10', 'Bar à soins'],
-                ['aspect-[4/5]', 'Espace onglerie'],
-            ] as [$ratio, $label])
-                <figure data-reveal>
-                    <div class="{{ $ratio }} overflow-hidden rounded-[1.75rem] bg-cream-200">
-                        <div class="texture-gradient pattern-dots h-full w-full"></div>
-                    </div>
+                ['images/salon/miroirs.jpg', '', 'Espace coiffage'],
+                ['images/salon/bar-a-soins.jpg', 'sm:mt-10', 'Bar à soins'],
+                ['images/salon/accueil.jpg', '', 'Accueil & boutique'],
+            ] as [$image, $offset, $label])
+                <figure class="{{ $offset }}" data-reveal>
+                    <x-media :src="$image" :alt="$label" ratio="aspect-[4/5]"
+                             class="rounded-[1.75rem] shadow-[0_30px_60px_-40px_rgba(51,34,28,0.5)]" />
                     <figcaption class="mt-3 text-center text-xs uppercase tracking-[0.2em] text-espresso-700/55">{{ $label }}</figcaption>
                 </figure>
             @endforeach
@@ -92,7 +91,8 @@
                 @foreach ($staff as $member)
                     <div data-reveal>
                         @if ($member->photo)
-                            <x-media :src="$member->photo" :alt="$member->name" ratio="aspect-[3/4]" />
+                            <x-media :src="$member->photo" :alt="$member->name" ratio="aspect-[3/4]"
+                                     class="shadow-[0_30px_60px_-40px_rgba(51,34,28,0.5)]" />
                         @else
                             <div class="aspect-[3/4] overflow-hidden rounded-2xl bg-espresso-900">
                                 <div class="texture-gradient grid h-full w-full place-items-center">
@@ -129,6 +129,28 @@
                         </figure>
                     @endforeach
                 </div>
+            </div>
+        </section>
+    @endif
+
+    @if ($gallery->isNotEmpty())
+        <section class="mx-auto max-w-7xl px-5 py-24 lg:px-8">
+            <div class="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+                <x-section-title align="left" eyebrow="Nos réalisations" title="Ce qui sort de nos mains" />
+                <a href="{{ route('gallery.index') }}" class="btn-outline shrink-0">Voir la galerie</a>
+            </div>
+
+            <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                @foreach ($gallery as $item)
+                    <a href="{{ route('gallery.index', ['univers' => $item->category]) }}" class="group block" data-reveal>
+                        <x-media :src="$item->image" :alt="$item->title" ratio="aspect-[4/5]" :overlay="true">
+                            <div class="pointer-events-none absolute inset-x-0 bottom-0 p-5">
+                                <span class="text-[10px] uppercase tracking-[0.2em] text-gold-300">{{ $item->category }}</span>
+                                <p class="font-display text-xl font-semibold text-cream-100">{{ $item->title }}</p>
+                            </div>
+                        </x-media>
+                    </a>
+                @endforeach
             </div>
         </section>
     @endif

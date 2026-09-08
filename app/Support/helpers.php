@@ -1,12 +1,30 @@
 <?php
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 if (! function_exists('fcfa')) {
     /** Formate un montant entier dans la devise du salon : 25 000 FCFA */
     function fcfa(int|float|null $amount): string
     {
         return number_format((float) $amount, 0, ',', ' ').' '.config('salon.currency');
+    }
+}
+
+if (! function_exists('salon_image')) {
+    /**
+     * URL d'un visuel : les fichiers livrés avec le site vivent dans public/images,
+     * ceux téléversés depuis l'espace de gestion dans storage/app/public.
+     */
+    function salon_image(?string $path): ?string
+    {
+        if (! $path) {
+            return null;
+        }
+
+        return str_starts_with($path, 'images/')
+            ? asset($path)
+            : Storage::url($path);
     }
 }
 

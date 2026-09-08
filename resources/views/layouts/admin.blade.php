@@ -18,6 +18,9 @@
         ['admin.services.index', 'ciseaux', 'Prestations', null],
         ['admin.products.index', 'box', 'Boutique', null],
         ['admin.staff.index', 'sparkles', 'Équipe', null],
+        ['admin.gallery.index', 'star', 'Galerie', null],
+        ['admin.offers.index', 'wallet', 'Forfaits', null],
+        ['admin.journal.index', 'edit', 'Journal', null],
         ['admin.reports.index', 'chart', 'Rapports', null],
     ];
 @endphp

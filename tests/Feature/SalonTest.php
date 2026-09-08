@@ -3,13 +3,17 @@
 namespace Tests\Feature;
 
 use App\Models\Appointment;
+use App\Models\GalleryItem;
+use App\Models\Offer;
 use App\Models\Order;
+use App\Models\Post;
 use App\Models\Product;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class SalonTest extends TestCase
@@ -42,6 +46,42 @@ class SalonTest extends TestCase
         ]);
     }
 
+    private function galleryItem(array $attributes = []): GalleryItem
+    {
+        return GalleryItem::create($attributes + [
+            'title' => 'Cornrows géométriques',
+            'category' => 'Tresses',
+            'image' => 'images/gallery/cornrows.jpg',
+            'format' => 'paysage',
+            'is_published' => true,
+        ]);
+    }
+
+    private function offer(array $attributes = []): Offer
+    {
+        return Offer::create($attributes + [
+            'name' => 'Rituel Mariée',
+            'slug' => 'rituel-mariee-'.Str::lower(Str::random(4)),
+            'tagline' => 'Le grand jour',
+            'price' => 95000,
+            'includes' => "Coiffure\nManucure",
+            'is_active' => true,
+        ]);
+    }
+
+    private function article(array $attributes = []): Post
+    {
+        return Post::create($attributes + [
+            'title' => 'La routine hydratation',
+            'slug' => 'routine-hydratation-'.Str::lower(Str::random(4)),
+            'category' => 'Soins',
+            'excerpt' => 'Quatre étapes simples.',
+            'body' => "Premier paragraphe.\n\n## Un sous-titre\n\n- Point un\n- Point deux",
+            'is_published' => true,
+            'published_at' => now()->subDay(),
+        ]);
+    }
+
     private function admin(): User
     {
         return User::create([
@@ -68,13 +108,52 @@ class SalonTest extends TestCase
     {
         $service = $this->service();
         $product = $this->product();
+        $post = $this->article();
+        $this->galleryItem();
+        $this->offer();
 
         foreach ([
             '/', '/le-salon', '/contact', '/prestations', '/boutique', '/panier', '/rendez-vous',
-            '/prestations/'.$service->slug, '/boutique/'.$product->slug,
+            '/realisations', '/realisations?univers=Tresses', '/forfaits', '/journal',
+            '/prestations/'.$service->slug, '/boutique/'.$product->slug, '/journal/'.$post->slug,
         ] as $url) {
             $this->get($url)->assertOk();
         }
+    }
+
+    public function test_la_galerie_affiche_les_realisations_publiees(): void
+    {
+        $this->galleryItem(['title' => 'Box braids longues']);
+        $this->galleryItem(['title' => 'Brouillon non publié', 'is_published' => false]);
+
+        $this->get('/realisations')
+            ->assertOk()
+            ->assertSee('Box braids longues')
+            ->assertDontSee('Brouillon non publié');
+    }
+
+    public function test_un_article_en_brouillon_est_introuvable(): void
+    {
+        $post = $this->article(['is_published' => false]);
+
+        $this->get('/journal/'.$post->slug)->assertNotFound();
+        $this->get('/journal')->assertOk()->assertDontSee($post->title);
+    }
+
+    public function test_le_forfait_calcule_l_economie_et_les_lignes(): void
+    {
+        $offer = $this->offer([
+            'price' => 95000,
+            'compare_price' => 125000,
+            'includes' => "Coiffure\nManucure\nSoin du visage",
+            'duration' => 300,
+        ]);
+
+        $this->assertSame(30000, $offer->saving);
+        $this->assertCount(3, $offer->lines);
+        $this->assertSame('5h', $offer->duration_label);
+
+        $this->get('/forfaits')->assertOk()->assertSee('Manucure');
     }
 
     public function test_les_creneaux_disponibles_sont_calcules(): void
@@ -202,6 +281,12 @@ class SalonTest extends TestCase
             '/admin/products',
             '/admin/products/'.$product->id.'/edit',
             '/admin/staff',
+            '/admin/gallery',
+            '/admin/gallery/create',
+            '/admin/offers',
+            '/admin/offers/create',
+            '/admin/journal',
+            '/admin/journal/create',
             '/admin/rapports?periode=mois',
             '/admin/rapports/impression?periode=semaine',
         ] as $url) {

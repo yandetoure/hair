@@ -11,6 +11,16 @@
 <body class="font-sans">
 @php
     $cartCount = app(\App\Services\Cart::class)->count();
+
+    $navLinks = [
+        'salon' => 'Le salon',
+        'services.index' => 'Prestations',
+        'gallery.index' => 'Réalisations',
+        'offers.index' => 'Forfaits',
+        'shop.index' => 'Boutique',
+        'journal.index' => 'Journal',
+        'contact' => 'Contact',
+    ];
 @endphp
 
 <header class="sticky top-0 z-50 border-b border-espresso-900/10 bg-cream-50/90 backdrop-blur-md">
@@ -23,14 +33,8 @@
             </span>
         </a>
 
-        <nav class="hidden items-center gap-8 text-sm lg:flex">
-            @foreach ([
-                'home' => 'Accueil',
-                'salon' => 'Le salon',
-                'services.index' => 'Prestations & tarifs',
-                'shop.index' => 'Boutique',
-                'contact' => 'Contact',
-            ] as $route => $label)
+        <nav class="hidden items-center gap-6 text-sm xl:flex">
+            @foreach ($navLinks as $route => $label)
                 <a href="{{ route($route) }}"
                    class="relative py-1 transition {{ request()->routeIs($route) ? 'text-gold-600' : 'text-espresso-800 hover:text-gold-600' }}">
                     {{ $label }}
@@ -49,21 +53,15 @@
                 @endif
             </a>
             <a href="{{ route('booking.create') }}" class="btn-gold hidden sm:inline-flex">Prendre rendez-vous</a>
-            <button type="button" data-menu-toggle class="grid h-11 w-11 place-items-center rounded-full border border-espresso-900/15 lg:hidden" aria-label="Menu">
+            <button type="button" data-menu-toggle class="grid h-11 w-11 place-items-center rounded-full border border-espresso-900/15 xl:hidden" aria-label="Menu">
                 <x-icon name="menu" class="h-5 w-5" />
             </button>
         </div>
     </div>
 
-    <div data-menu class="hidden border-t border-espresso-900/10 bg-cream-50 lg:hidden">
+    <div data-menu class="hidden border-t border-espresso-900/10 bg-cream-50 xl:hidden">
         <nav class="mx-auto flex max-w-7xl flex-col px-5 py-3 text-sm">
-            @foreach ([
-                'home' => 'Accueil',
-                'salon' => 'Le salon',
-                'services.index' => 'Prestations & tarifs',
-                'shop.index' => 'Boutique',
-                'contact' => 'Contact',
-            ] as $route => $label)
+            @foreach ($navLinks as $route => $label)
                 <a href="{{ route($route) }}" class="border-b border-espresso-900/5 py-3 {{ request()->routeIs($route) ? 'text-gold-600' : '' }}">{{ $label }}</a>
             @endforeach
             <a href="{{ route('booking.create') }}" class="btn-gold mt-4">Prendre rendez-vous</a>
@@ -116,7 +114,10 @@
             <ul class="mt-5 space-y-3 text-sm text-cream-100/75">
                 <li><a href="{{ route('salon') }}" class="hover:text-gold-300">Le salon</a></li>
                 <li><a href="{{ route('services.index') }}" class="hover:text-gold-300">Prestations & tarifs</a></li>
+                <li><a href="{{ route('gallery.index') }}" class="hover:text-gold-300">Nos réalisations</a></li>
+                <li><a href="{{ route('offers.index') }}" class="hover:text-gold-300">Forfaits & rituels</a></li>
                 <li><a href="{{ route('shop.index') }}" class="hover:text-gold-300">Boutique</a></li>
+                <li><a href="{{ route('journal.index') }}" class="hover:text-gold-300">Journal beauté</a></li>
                 <li><a href="{{ route('booking.create') }}" class="hover:text-gold-300">Réserver</a></li>
             </ul>
         </div>

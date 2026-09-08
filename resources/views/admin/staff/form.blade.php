@@ -32,7 +32,7 @@
                 <input type="file" name="photo" id="photo" accept="image/*"
                        class="w-full rounded-xl border border-espresso-900/15 bg-white px-4 py-2.5 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-espresso-900 file:px-3 file:py-1.5 file:text-xs file:text-cream-100">
                 @if ($member->photo)
-                    <img src="{{ Storage::url($member->photo) }}" alt="" class="mt-3 h-24 w-24 rounded-lg object-cover">
+                    <img src="{{ salon_image($member->photo) }}" alt="" class="mt-3 h-24 w-24 rounded-lg object-cover">
                 @endif
             </div>
             <div>

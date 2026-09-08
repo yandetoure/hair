@@ -16,7 +16,7 @@
     @forelse ($members as $member)
         <div class="card overflow-hidden">
             @if ($member->photo)
-                <img src="{{ Storage::url($member->photo) }}" alt="{{ $member->name }}" class="aspect-[4/3] w-full object-cover">
+                <img src="{{ salon_image($member->photo) }}" alt="{{ $member->name }}" class="aspect-[4/3] w-full object-cover">
             @else
                 <div class="texture-gradient grid aspect-[4/3] w-full place-items-center bg-espresso-900">
                     <span class="font-display text-4xl font-semibold text-gold-300">{{ $member->initials }}</span>

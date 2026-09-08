@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Admin\AppointmentController as AdminAppointmentController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
+use App\Http\Controllers\Admin\JournalController as AdminJournalController;
+use App\Http\Controllers\Admin\OfferController as AdminOfferController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ReportController;
@@ -11,7 +14,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JournalController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\ServicePageController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +33,11 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 Route::get('/prestations', [ServicePageController::class, 'index'])->name('services.index');
 Route::get('/prestations/{service:slug}', [ServicePageController::class, 'show'])->name('services.show');
+
+Route::get('/realisations', [GalleryController::class, 'index'])->name('gallery.index');
+Route::get('/forfaits', [OfferController::class, 'index'])->name('offers.index');
+Route::get('/journal', [JournalController::class, 'index'])->name('journal.index');
+Route::get('/journal/{post:slug}', [JournalController::class, 'show'])->name('journal.show');
 
 Route::get('/boutique', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/boutique/{product:slug}', [ShopController::class, 'show'])->name('shop.show');
@@ -70,6 +81,9 @@ Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('services', AdminServiceController::class)->except(['show']);
     Route::resource('products', AdminProductController::class)->except(['show']);
     Route::resource('staff', AdminStaffController::class)->except(['show']);
+    Route::resource('gallery', AdminGalleryController::class)->except(['show'])->parameters(['gallery' => 'item']);
+    Route::resource('offers', AdminOfferController::class)->except(['show']);
+    Route::resource('journal', AdminJournalController::class)->except(['show'])->parameters(['journal' => 'post']);
 
     Route::get('/rapports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/rapports/impression', [ReportController::class, 'print'])->name('reports.print');

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ServiceCategory extends Model
 {
-    protected $fillable = ['name', 'slug', 'icon', 'description', 'position'];
+    protected $fillable = ['name', 'slug', 'icon', 'image', 'description', 'position'];
 
     public function services(): HasMany
     {

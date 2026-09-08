@@ -45,17 +45,14 @@
             </div>
 
             <div>
-                <div class="card overflow-hidden">
-                    <div class="relative aspect-[4/3] bg-cream-200">
-                        <div class="texture-gradient pattern-dots absolute inset-0"></div>
-                        <div class="absolute inset-0 grid place-items-center text-center">
-                            <div>
-                                <x-icon name="map-pin" class="mx-auto h-10 w-10 text-espresso-900/40" />
-                                <p class="mt-3 font-display text-2xl font-semibold text-espresso-900">{{ config('salon.address') }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.16em] text-espresso-700/55">Parking disponible sur place</p>
-                            </div>
+                <div class="overflow-hidden rounded-2xl">
+                    <x-media src="images/salon/accueil.jpg" alt="Devanture du salon" ratio="aspect-[4/3]" :overlay="true">
+                        <div class="pointer-events-none absolute inset-x-0 bottom-0 p-7 text-cream-100">
+                            <x-icon name="map-pin" class="h-8 w-8 text-gold-300" />
+                            <p class="mt-3 font-display text-2xl font-semibold">{{ config('salon.address') }}</p>
+                            <p class="mt-1 text-xs uppercase tracking-[0.16em] text-cream-100/70">Parking disponible sur place</p>
                         </div>
-                    </div>
+                    </x-media>
                 </div>
 
                 <div class="card mt-6 p-8">

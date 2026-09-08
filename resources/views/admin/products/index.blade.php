@@ -38,7 +38,7 @@
                         <td class="px-5 py-4">
                             <div class="flex items-center gap-3">
                                 @if ($product->image)
-                                    <img src="{{ Storage::url($product->image) }}" alt="" class="h-10 w-10 rounded-lg object-cover">
+                                    <img src="{{ salon_image($product->image) }}" alt="" class="h-10 w-10 rounded-lg object-cover">
                                 @else
                                     <span class="grid h-10 w-10 place-items-center rounded-lg bg-cream-200 text-espresso-700/40">
                                         <x-icon name="box" class="h-4 w-4" />

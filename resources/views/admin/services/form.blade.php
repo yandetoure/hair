@@ -60,7 +60,7 @@
                 <input type="file" name="image" id="image" accept="image/*"
                        class="w-full rounded-xl border border-espresso-900/15 bg-white px-4 py-2.5 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-espresso-900 file:px-3 file:py-1.5 file:text-xs file:text-cream-100">
                 @if ($service->image)
-                    <img src="{{ Storage::url($service->image) }}" alt="" class="mt-3 h-24 w-32 rounded-lg object-cover">
+                    <img src="{{ salon_image($service->image) }}" alt="" class="mt-3 h-24 w-32 rounded-lg object-cover">
                 @endif
             </div>
 

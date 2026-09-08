@@ -2,11 +2,12 @@
 
 Application Laravel 13 complète pour un salon de coiffure & beauté :
 
-- **Côté client** : présentation du salon, carte des prestations avec tarifs, réservation de rendez-vous
-  en ligne (coiffure, tresses, soins, manucure, pédicure…), boutique de produits et accessoires avec panier
-  et commande.
+- **Côté client** : présentation du salon, carte des prestations avec tarifs, galerie des réalisations,
+  forfaits beauté, journal de conseils, réservation de rendez-vous en ligne (coiffure, tresses, soins,
+  onglerie, visage, regard, spa) et boutique de produits avec panier et commande.
 - **Côté salon** : tableau de bord chiffré, agenda jour / semaine / mois, gestion des rendez-vous et des
-  commandes, catalogue des prestations et des produits, équipe, rapports avec export CSV et impression PDF.
+  commandes, catalogue des prestations et des produits, équipe, galerie, forfaits, journal, rapports avec
+  export CSV et impression PDF.
 
 ---
 
@@ -75,6 +76,9 @@ Le nom de l'application et le fuseau horaire se règlent dans `.env` (`APP_NAME`
 | Le salon | `/le-salon` | Histoire, approche en 4 étapes, équipe, témoignages |
 | Prestations & tarifs | `/prestations` | Carte complète par univers, durée et tarif de chaque prestation |
 | Fiche prestation | `/prestations/{slug}` | Détail, tarif, durée, réservation directe |
+| Réalisations | `/realisations` | Galerie filtrable par univers (tresses, coiffure, onglerie, soins, beauté) |
+| Forfaits & rituels | `/forfaits` | Formules multi-prestations avec économie affichée |
+| Journal beauté | `/journal`, `/journal/{slug}` | Articles de conseils rédigés par l'équipe |
 | Boutique | `/boutique` | Filtres par catégorie, recherche, ajout au panier |
 | Panier / commande | `/panier`, `/commande` | Retrait au salon ou livraison, frais calculés automatiquement |
 | Rendez-vous | `/rendez-vous` | Choix de la prestation, du jour, du créneau, coordonnées |
@@ -94,6 +98,9 @@ confirme ensuite par téléphone. Chaque commande décrémente le stock du produ
 | **Prestations** | CRUD complet : catégorie, tarif (ou fourchette), durée, photo, mise en avant, visibilité |
 | **Boutique** | CRUD produits : prix, stock, photo, mise en avant, visibilité |
 | **Équipe** | Fiches des praticiennes affichées sur le site et proposées à la réservation |
+| **Galerie** | Réalisations publiées sur le site : photo, univers, format portrait/paysage, ordre, visibilité |
+| **Forfaits** | Formules beauté : tarif, tarif barré, durée, prestations incluses (une par ligne), photo |
+| **Journal** | Articles de conseils : chapô, contenu (sous-titres `##`, listes `-`), image, date, brouillon/publié |
 | **Rapports** | Période au choix (jour, semaine, mois, trimestre, année ou dates personnalisées), comparaison avec la période précédente, évolution du CA, heures de pointe, top prestations/produits, détail journalier — **export CSV** et **version imprimable / PDF** |
 
 Une prestation ou un produit déjà lié à un rendez-vous ou une commande est désactivé plutôt que
@@ -105,16 +112,19 @@ supprimé, afin de préserver l'historique et les rapports.
 
 ```
 app/
-├── Http/Controllers/          Site public (accueil, prestations, boutique, panier, réservation)
-│   ├── Admin/                 Tableau de bord, agenda, RDV, commandes, catalogue, rapports
+├── Http/Controllers/          Site public (accueil, prestations, galerie, forfaits, journal,
+│                              boutique, panier, réservation)
+│   ├── Admin/                 Tableau de bord, agenda, RDV, commandes, catalogue, galerie,
+│                              forfaits, journal, rapports
 │   └── Auth/LoginController   Connexion de l'équipe
 ├── Http/Middleware/EnsureUserIsAdmin.php
-├── Models/                    Service, ServiceCategory, Product, Appointment, Order, OrderItem, StaffMember…
+├── Models/                    Service, ServiceCategory, Product, Appointment, Order, OrderItem,
+│                              StaffMember, GalleryItem, Offer, Post, Testimonial
 ├── Services/
 │   ├── AvailabilityService    Calcul des créneaux disponibles
 │   ├── Cart                   Panier en session
 │   └── ReportService          KPI, séries temporelles, tops, taux d'occupation
-└── Support/helpers.php        fcfa(), fr_date()
+└── Support/helpers.php        fcfa(), fr_date(), salon_image()
 
 resources/views/
 ├── layouts/{public,admin}     Les deux gabarits
@@ -126,10 +136,21 @@ resources/views/
 
 Le design (palette crème/espresso/or, typographies Cormorant Garamond + Jost) est défini dans
 [`resources/css/app.css`](resources/css/app.css) via les variables de thème Tailwind 4 ; les polices sont
-auto-hébergées au build, aucune dépendance externe à l'exécution.
+auto-hébergées au build, aucune dépendance externe à l'exécution. Les animations d'apparition respectent
+`prefers-reduced-motion`.
 
-Les photos sont optionnelles : sans image, les cartes affichent un dégradé décoratif. Les visuels
-téléversés depuis l'admin sont stockés dans `storage/app/public` (lien créé par `php artisan storage:link`).
+### Images
+
+Deux sources cohabitent, résolues par le helper `salon_image()` :
+
+- `public/images/…` — les visuels livrés avec le site (héro, univers, prestations, produits, équipe,
+  galerie, forfaits, journal). Ce sont des **photos de démonstration Unsplash**, recadrées et compressées
+  (~4 Mo au total) : voir [`public/images/CREDITS.md`](public/images/CREDITS.md). **À remplacer par les
+  photos du salon avant la mise en ligne**, en particulier les portraits de l'équipe.
+- `storage/app/public/…` — les visuels téléversés depuis l'espace de gestion (lien créé par
+  `php artisan storage:link`).
+
+Une image reste toujours optionnelle : sans photo, les cartes affichent un dégradé décoratif.
 
 ---
 
@@ -139,9 +160,10 @@ téléversés depuis l'admin sont stockés dans `storage/app/public` (lien cré�
 php artisan test
 ```
 
-Couvre : affichage des pages publiques, calcul des créneaux, réservation d'un rendez-vous, refus d'un
-créneau complet, commande boutique avec décrément du stock, protection de l'espace de gestion, affichage
-de tous les écrans admin, export CSV et changement de statut.
+Couvre : affichage des pages publiques (dont galerie, forfaits et journal), filtrage de la galerie,
+articles en brouillon masqués, calcul de l'économie d'un forfait, calcul des créneaux, réservation d'un
+rendez-vous, refus d'un créneau complet, commande boutique avec décrément du stock, protection de l'espace
+de gestion, affichage de tous les écrans admin, export CSV et changement de statut.
 
 ---
 
@@ -151,4 +173,5 @@ de tous les écrans admin, export CSV et changement de statut.
 2. Base de données : SQLite convient pour un salon ; pour MySQL, renseignez `DB_*` puis `php artisan migrate --force`.
 3. `npm run build`, `php artisan storage:link`, puis `php artisan optimize` (cache config, routes et vues).
 4. Créer le vrai compte gérante puis supprimer le compte de démonstration.
-5. Remplacer les textes de présentation et ajouter les photos du salon depuis l'espace de gestion.
+5. Remplacer les textes de présentation et **les photos de démonstration** par celles du salon
+   (voir `public/images/CREDITS.md`), depuis l'espace de gestion ou en écrasant les fichiers de `public/images/`.
